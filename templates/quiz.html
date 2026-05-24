@@ -11,32 +11,37 @@
 
     <form action="/submit" method="POST">
 
-        {% for q in questions %}
+    <label>Enter Your Name:</label>
+    <input type="text" name="username" required>
 
-            {% set outer_loop = loop %}
+    <br><br>
 
-            <h3>{{ q.question }}</h3>
+    {% for q in questions %}
 
-            {% for option in q.options %}
+        {% set outer_loop = loop %}
 
-                <input type="radio"
-                       name="q{{ outer_loop.index0 }}"
-                       value="{{ option }}"
-                       required>
+        <h3>{{ q.question }}</h3>
 
-                {{ option }}
+        {% for option in q.options %}
 
-                <br>
+            <input type="radio"
+                   name="q{{ outer_loop.index0 }}"
+                   value="{{ option }}"
+                   required>
 
-            {% endfor %}
+            {{ option }}
 
             <br>
 
         {% endfor %}
 
-        <button type="submit">Submit Quiz</button>
+        <br>
 
-    </form>
+    {% endfor %}
+
+    <button type="submit">Submit Quiz</button>
+
+</form>
 
 </body>
 </html>

@@ -1,3 +1,4 @@
+import csv
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -140,7 +141,27 @@ def submit():
         if selected == q['answer']:
             score += 1
 
-    return f"<h1>Your Score: {score}/{len(questions)}</h1>"
+    username = request.form.get("username")
+
+    with open("scores.csv", "a", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([username, score])
+
+    return redirect("/leaderboard")
+
+@app.route("/leaderboard")
+def leaderboard():
+    scores = []
+
+    with open("scores.csv", "r") as file:
+        reader = csv.reader(file)
+
+        for row in reader:
+            scores.append(row)
+
+    scores.sort(key=lambda x: int(x[1]), reverse=True)
+
+    return render_template("leaderboard.html", scores=scores)
 
 if __name__ == '__main__':
     app.run(debug=True)
