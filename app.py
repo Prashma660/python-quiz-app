@@ -151,18 +151,40 @@ def submit():
 
     username = request.form.get("username")
 
+    wrong_answers = []
+
     for i, q in enumerate(questions):
 
         selected = request.form.get(f"q{i}")
 
         if selected == q["answer"]:
+
             score += 1
 
+        else:
+
+            wrong_answers.append({
+
+                "question": q["question"],
+
+                "your_answer": selected if selected else "Not Answered",
+
+                "correct_answer": q["answer"]
+
+            })
+
     return render_template(
+
         "result.html",
+
         username=username,
+
         score=score,
-        total=len(questions)
+
+        total=len(questions),
+
+        wrong_answers=wrong_answers
+
     )
 
 

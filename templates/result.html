@@ -13,13 +13,36 @@
 
     <h1>Quiz Submitted Successfully</h1>
 
-    <h2>
-        Name: {{ username }}
-    </h2>
+    <h2>Name: {{ username }}</h2>
 
-    <h2>
-        Your Score: {{ score }} / {{ total }}
-    </h2>
+    <h2>Your Score: {{ score }} / {{ total }}</h2>
+
+    <hr>
+
+    <h2>Wrong Attempted Questions</h2>
+
+    {% if wrong_answers %}
+
+        {% for item in wrong_answers %}
+
+            <h3>Question:</h3>
+            <p>{{ item.question }}</p>
+
+            <h3>Your Answer:</h3>
+            <p>{{ item.your_answer }}</p>
+
+            <h3>Correct Answer:</h3>
+            <p>{{ item.correct_answer }}</p>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h2>Excellent! All answers are correct 🎉</h2>
+
+    {% endif %}
 
 </body>
 
