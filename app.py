@@ -62,7 +62,7 @@ def submit():
 
     score = 0
 
-    username = request.form["username"]
+    username = request.form.get("username", "Unknown")
 
     for i, q in enumerate(questions):
 
@@ -85,14 +85,19 @@ def leaderboard():
 
     scores = []
 
-    with open("scores.csv", "r") as file:
+    try:
 
-        reader = csv.reader(file)
+        with open("scores.csv", "r") as file:
 
-        for row in reader:
+            reader = csv.reader(file)
 
-            if len(row) == 2:
-                scores.append(row)
+            for row in reader:
+
+                if len(row) == 2:
+                    scores.append(row)
+
+    except:
+        pass
 
     scores.sort(key=lambda x: int(x[1]), reverse=True)
 

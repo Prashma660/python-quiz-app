@@ -3,87 +3,49 @@
 
 <head>
 
-    <title>Python Quiz</title>
+    <title>Leaderboard</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script>
-
-        let timeLeft = {{ remaining_seconds }};
-
-        function updateTimer() {
-
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-
-            document.getElementById("timer").innerHTML =
-                minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-
-            if (timeLeft <= 0) {
-
-                alert("Time is over! Quiz auto-submitted.");
-
-                document.getElementById("quizForm").submit();
-
-            }
-
-            timeLeft--;
-
-        }
-
-        setInterval(updateTimer, 1000);
-
-    </script>
-
 </head>
 
-<body onload="updateTimer()">
+<body>
 
-    <h1>Python Basics Quiz</h1>
+    <h1>Quiz Leaderboard</h1>
 
-    <h2>
-        Time Remaining:
-        <span id="timer"></span>
-    </h2>
+    {% if scores %}
 
-    <form action="/submit" method="POST" id="quizForm">
+    <table border="1" cellpadding="10">
 
-        <label>
-            <b>Enter Your Name:</b>
-        </label>
+        <tr>
 
-        <input type="text" name="username" required>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
 
-        <br><br>
+        </tr>
 
-        {% for q in questions %}
+        {% for score in scores %}
 
-            {% set outer_loop = loop %}
+        <tr>
 
-            <h3>{{ q.question }}</h3>
+            <td>{{ loop.index }}</td>
 
-            {% for option in q.options %}
+            <td>{{ score[0] }}</td>
 
-                <input type="radio"
-                       name="q{{ outer_loop.index0 }}"
-                       value="{{ option }}"
-                       required>
+            <td>{{ score[1] }}</td>
 
-                {{ option }}
-
-                <br>
-
-            {% endfor %}
-
-            <br>
+        </tr>
 
         {% endfor %}
 
-        <button type="submit">
-            Submit Quiz
-        </button>
+    </table>
 
-    </form>
+    {% else %}
+
+    <h2>No scores available</h2>
+
+    {% endif %}
 
 </body>
 
