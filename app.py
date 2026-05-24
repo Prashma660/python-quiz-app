@@ -1,10 +1,16 @@
 from flask import Flask, render_template, request, redirect
 import csv
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
+# QUIZ TIMER SETTINGS
+QUIZ_START = "2026-05-25 10:00:00"
+QUIZ_END = "2026-05-25 10:10:00"
+
 questions = [
+
     {
         "question": "Which keyword is used to define a function in Python?",
         "options": ["func", "define", "def", "function"],
@@ -34,6 +40,7 @@ questions = [
         "options": ["Set", "Tuple", "Dictionary", "List"],
         "answer": "List"
     }
+
 ]
 
 # Create scores.csv if not exists
@@ -44,11 +51,43 @@ if not os.path.exists("scores.csv"):
 
 @app.route("/")
 def home():
-    return render_template("quiz.html", questions=questions)
+
+    current_time = datetime.now()
+
+    start_time = datetime.strptime(QUIZ_START, "%Y-%m-%d %H:%M:%S")
+    end_time = datetime.strptime(QUIZ_END, "%Y-%m-%d %H:%M:%S")
+
+    # BEFORE QUIZ START
+    if current_time < start_time:
+        return render_template(
+            "waiting.html",
+            start_time=QUIZ_START
+        )
+
+    # AFTER QUIZ END
+    if current_time > end_time:
+        return "<h1>Quiz Time Over</h1>"
+
+    # QUIZ ACTIVE
+    remaining_seconds = int((end_time - current_time).total_seconds())
+
+    return render_template(
+        "quiz.html",
+        questions=questions,
+        remaining_seconds=remaining_seconds
+    )
 
 
 @app.route("/submit", methods=["POST"])
 def submit():
+
+    current_time = datetime.now()
+
+    end_time = datetime.strptime(QUIZ_END, "%Y-%m-%d %H:%M:%S")
+
+    # Prevent late submissions
+    if current_time > end_time:
+        return "<h1>Submission Time Over</h1>"
 
     score = 0
 
@@ -86,9 +125,11 @@ def leaderboard():
 
     scores.sort(key=lambda x: int(x[1]), reverse=True)
 
-    return render_template("leaderboard.html", scores=scores)
+    return render_template(
+        "leaderboard.html",
+        scores=scores
+    )
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
