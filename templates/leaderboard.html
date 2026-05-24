@@ -2,7 +2,11 @@
 <html>
 
 <head>
+
     <title>Leaderboard</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 
 <body>
@@ -20,14 +24,22 @@
         {% for score in scores %}
 
         <tr>
+
             <td>{{ loop.index }}</td>
+
             <td>{{ score[0] }}</td>
+
             <td>{{ score[1] }}</td>
+
         </tr>
 
         {% endfor %}
 
     </table>
+
+    <br>
+
+    <a href="/">Attend Quiz Again</a>
 
 </body>
 

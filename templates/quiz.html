@@ -2,46 +2,52 @@
 <html>
 
 <head>
+
     <title>Python Quiz</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 
 <body>
 
-    <h1>Basic Python Quiz</h1>
+    <h1>Python Basics Quiz</h1>
 
     <form action="/submit" method="POST">
 
-    <label>Enter Your Name:</label>
-    <input type="text" name="username" required>
+        <label><b>Enter Your Name:</b></label>
 
-    <br><br>
+        <input type="text" name="username" required>
 
-    {% for q in questions %}
+        <br><br>
 
-        {% set outer_loop = loop %}
+        {% for q in questions %}
 
-        <h3>{{ q.question }}</h3>
+            {% set outer_loop = loop %}
 
-        {% for option in q.options %}
+            <h3>{{ q.question }}</h3>
 
-            <input type="radio"
-                   name="q{{ outer_loop.index0 }}"
-                   value="{{ option }}"
-                   required>
+            {% for option in q.options %}
 
-            {{ option }}
+                <input type="radio"
+                       name="q{{ outer_loop.index0 }}"
+                       value="{{ option }}"
+                       required>
+
+                {{ option }}
+
+                <br>
+
+            {% endfor %}
 
             <br>
 
         {% endfor %}
 
-        <br>
+        <button type="submit">Submit Quiz</button>
 
-    {% endfor %}
-
-    <button type="submit">Submit Quiz</button>
-
-</form>
+    </form>
 
 </body>
+
 </html>
