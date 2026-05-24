@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Python Quiz</title>
+</head>
+
+<body>
+
+    <h1>Basic Python Quiz</h1>
+
+    <form action="/submit" method="POST">
+
+        {% for q in questions %}
+
+            {% set outer_loop = loop %}
+
+            <h3>{{ q.question }}</h3>
+
+            {% for option in q.options %}
+
+                <input type="radio"
+                       name="q{{ outer_loop.index0 }}"
+                       value="{{ option }}"
+                       required>
+
+                {{ option }}
+
+                <br>
+
+            {% endfor %}
+
+            <br>
+
+        {% endfor %}
+
+        <button type="submit">Submit Quiz</button>
+
+    </form>
+
+</body>
+</html>
