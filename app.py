@@ -66,7 +66,7 @@ def submit():
 
     for i, q in enumerate(questions):
 
-        selected = request.form.get(f"q{i}")
+        selected = request.form.get(f"q{i}", "")
 
         if selected == q["answer"]:
             score += 1
