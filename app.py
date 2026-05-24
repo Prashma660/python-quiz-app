@@ -54,8 +54,8 @@ def home():
 
     current_time = datetime.now()
 
-    start_time = datetime.strptime(QUIZ_START, "%Y-%m-%d %H:%M:%S")
-    end_time = datetime.strptime(QUIZ_END, "%Y-%m-%d %H:%M:%S")
+    start_time = datetime.strptime(QUIZ_START, "2026-05-25 13:42:00")
+    end_time = datetime.strptime(QUIZ_END, "2026-05-25 13:46:00")
 
     # BEFORE QUIZ START
     if current_time < start_time:
