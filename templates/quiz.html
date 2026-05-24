@@ -21,6 +21,8 @@
 
             if (timeLeft <= 0) {
 
+                alert("Time is over! Quiz auto-submitted.");
+
                 document.getElementById("quizForm").submit();
 
             }
@@ -46,7 +48,9 @@
 
     <form action="/submit" method="POST" id="quizForm">
 
-        <label><b>Enter Your Name:</b></label>
+        <label>
+            <b>Enter Your Name:</b>
+        </label>
 
         <input type="text" name="username" required>
 

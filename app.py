@@ -1,13 +1,8 @@
 from flask import Flask, render_template, request, redirect
 import csv
 import os
-from datetime import datetime
 
 app = Flask(__name__)
-
-# QUIZ TIMER SETTINGS
-QUIZ_START = "2026-05-24 13:55:00"
-QUIZ_END = "2026-05-24 13:59:00"
 
 questions = [
 
@@ -45,6 +40,7 @@ questions = [
 
 # Create scores.csv if not exists
 if not os.path.exists("scores.csv"):
+
     with open("scores.csv", "w", newline="") as file:
         pass
 
@@ -52,42 +48,17 @@ if not os.path.exists("scores.csv"):
 @app.route("/")
 def home():
 
-    current_time = datetime.now()
-
-    start_time = datetime.strptime(QUIZ_START, "%Y-%m-%d %H:%M:%S")
-    end_time = datetime.strptime(QUIZ_END, "%Y-%m-%d %H:%M:%S")
-
-    # BEFORE QUIZ START
-    if current_time < start_time:
-        return render_template(
-            "waiting.html",
-            start_time=QUIZ_START
-        )
-
-    # AFTER QUIZ END
-    if current_time > end_time:
-        return "<h1>Quiz Time Over</h1>"
-
-    # QUIZ ACTIVE
-    remaining_seconds = int((end_time - current_time).total_seconds())
+    quiz_duration = 300
 
     return render_template(
         "quiz.html",
         questions=questions,
-        remaining_seconds=remaining_seconds
+        remaining_seconds=quiz_duration
     )
 
 
 @app.route("/submit", methods=["POST"])
 def submit():
-
-    current_time = datetime.now()
-
-    end_time = datetime.strptime(QUIZ_END, "%Y-%m-%d %H:%M:%S")
-
-    # Prevent late submissions
-    if current_time > end_time:
-        return "<h1>Submission Time Over</h1>"
 
     score = 0
 
