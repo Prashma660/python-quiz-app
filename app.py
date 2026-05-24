@@ -1,6 +1,4 @@
-from flask import Flask, render_template, request, redirect
-import csv
-import os
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -38,22 +36,13 @@ questions = [
 
 ]
 
-# Create scores.csv if not exists
-if not os.path.exists("scores.csv"):
-
-    with open("scores.csv", "w", newline="") as file:
-        pass
-
 
 @app.route("/")
 def home():
 
-    quiz_duration = 300
-
     return render_template(
         "quiz.html",
-        questions=questions,
-        remaining_seconds=quiz_duration
+        questions=questions
     )
 
 
@@ -62,48 +51,20 @@ def submit():
 
     score = 0
 
-    username = request.form.get("username", "Unknown")
+    username = request.form.get("username")
 
     for i, q in enumerate(questions):
 
-        selected = request.form.get(f"q{i}", "")
+        selected = request.form.get(f"q{i}")
 
         if selected == q["answer"]:
             score += 1
 
-    with open("scores.csv", "a", newline="") as file:
-
-        writer = csv.writer(file)
-
-        writer.writerow([username, score])
-
-    return redirect("/leaderboard")
-
-
-@app.route("/leaderboard")
-def leaderboard():
-
-    scores = []
-
-    try:
-
-        with open("scores.csv", "r") as file:
-
-            reader = csv.reader(file)
-
-            for row in reader:
-
-                if len(row) == 2:
-                    scores.append(row)
-
-    except:
-        pass
-
-    scores.sort(key=lambda x: int(x[1]), reverse=True)
-
     return render_template(
-        "leaderboard.html",
-        scores=scores
+        "result.html",
+        username=username,
+        score=score,
+        total=len(questions)
     )
 
 
