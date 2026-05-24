@@ -6,8 +6,8 @@ from datetime import datetime
 app = Flask(__name__)
 
 # QUIZ TIMER SETTINGS
-QUIZ_START = "2026-05-25 10:00:00"
-QUIZ_END = "2026-05-25 10:10:00"
+QUIZ_START = "2026-05-25 13:46:00"
+QUIZ_END = "2026-05-25 13:50:00"
 
 questions = [
 
@@ -54,8 +54,8 @@ def home():
 
     current_time = datetime.now()
 
-    start_time = datetime.strptime(QUIZ_START, "2026-05-25 13:42:00")
-    end_time = datetime.strptime(QUIZ_END, "2026-05-25 13:46:00")
+    start_time = datetime.strptime(QUIZ_START, "%Y-%m-%d %H:%M:%S")
+    end_time = datetime.strptime(QUIZ_END, "%Y-%m-%d %H:%M:%S")
 
     # BEFORE QUIZ START
     if current_time < start_time:
